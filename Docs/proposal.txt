@@ -1,0 +1,33 @@
+#Draft Two
+
+Project Proposal Draft 2
+
+Team Member Info:
+Rushi Sharma, Swagat Buha, Kizar Cassiere
+
+An overview of the Project:
+We are creating a python game called Titan Fly, which represents the lifestyle of a
+college student getting through a course. The student will be required to go through the vertical
+pipes, which signifies the different assignments and tasks required to get through the class. As
+points, you get through each pipe you gain points, which will add up to the required points
+needed to pass the class. If you fail to reach the point requirements you have to restart the game
+and try again.
+
+Goals of our software:
+Our goals are to have a running version of the game by the end of the semester. And if
+possible to add sound effects to the game. We also look forward to create an application that is
+compatible with most versions of desktop computers.
+
+How we use the Open Source Library:
+Pygame will allow us to run our python code as a desktop application and act as a
+graphics engine for the logic.
+Resources used to build your software i.e. any open source libraries used, tools used or any
+existing open source project :
+
+We will be using python’s open source library pygame, and an open source project of Flappy
+Bird available on GitHub. Although we are not directly modifying the repository. Rather we are
+creating our own custom game. Below are the links of the libraries:
+Reference Library
+https://www.pygame.org
+Reference Game
+https://github.com/sourabhv/FlapPyBird
