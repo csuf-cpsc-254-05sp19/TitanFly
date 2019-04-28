@@ -20,7 +20,7 @@ PLAYERS_LIST = ()
 BACKGROUND_LIST = ()
 PIPES_LIST = ()
 
-
+#Kizar
 def main():
     global SCREEN,FPSCLOCK
     pygame.init()
@@ -85,26 +85,49 @@ def main():
                             crashInfo = mainGame(movementInfo)
                             showGameOverScreen(crashInfo)
 
-
+#Rushi
 def showWelcomeAnimation():
 
 
-
+#Sunny
 def mainGame(movementInfo):
 
-
+#Rushi
 def showGameOverScreen(crashInfo):
 
+#Kizar
+def showScore(score):
+    scoreDigi = []
+    numWidth = 0
 
+    for x in list(str(score)):
+
+        scoreDigi.append(int(x))
+
+    for digit in scoreDigi:
+        numWidth += IMAGES['numbers'][digit].get_width()
+
+
+    offSetX = (SCREENWIDTH - numWidth) /  2
+
+    for digit in scoreDigi:
+        SCREEN.blit(IMAGES['numbers'][digit], (Xoffset, SCREENHEIGHT * 0.1))
+        offSetX += IMAGES['numbers'][digit].get_width()
+    
+
+#Sunny
 def playerShm(playerShm):
 
-
+#Rushi
 def getRandomPipe():
 
+#Kizar
 def checkCrash(player, upperPipes, lowerPipes):
 
+#Kizar
 def pixelCollision(rect1, rect2, hitmask1, hitmask2):
 
+#Sunny
 def getHitmask(image):
 
 if __name__ == '__main__':
