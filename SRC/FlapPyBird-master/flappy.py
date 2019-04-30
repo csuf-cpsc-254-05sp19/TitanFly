@@ -333,7 +333,7 @@ def showGameOverScreen(crashInfo):
 
     basex = crashInfo['basex']
 
-    upperPipes, lowerPipes = crashInfo['upperPipes'], crashInfo['lowerPipes']
+    upperPipes, lowerPipes = crashInfo['upperPipes'], crashIn+fo['lowerPipes']
 
     # play hit and die sounds
     SOUNDS['hit'].play()
