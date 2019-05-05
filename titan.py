@@ -7,18 +7,23 @@ from pygame.locals import *
 
 #Set display Parameters
 FPS = 60
-SCREENHEIGHT = 1300
+SCREENHEIGHT = 1135
 SCREENWIDTH = 700
 PIPEGAPSIZE = 150
-BASEY = SCREENHEIGHT * 0.79
+BASEY = SCREENHEIGHT * 0.9
 
 #Dictionary for Game assets
 IMAGES, SOUNDS, HITMASKS = {}, {}, {}
 
 #List of all sprites
-PLAYERS_LIST = ()
+PLAYERS_LIST = ('','','')
 BACKGROUND_LIST = ('SRC/assets/day.png', 'SRC/assets/night.png')
 PIPES_LIST = ()
+
+#try:
+#    xrange
+#except NameError:
+#    xrange = range
 
 #Kizar
 def main():
@@ -26,11 +31,30 @@ def main():
     pygame.init()
     
     #add counter images
-    IMAGES['numbers'] = ('...')
+    IMAGES['numbers'] = (              
+        pygame.image.load('SRC/assets/1.png').convert_alpha(),
+        pygame.image.load('SRC/assets/2.png').convert_alpha(),
+        pygame.image.load('SRC/assets/3.png').convert_alpha(),
+        pygame.image.load('SRC/assets/4.png').convert_alpha(),
+        pygame.image.load('SRC/assets/5.png').convert_alpha(),
+        pygame.image.load('SRC/assets/6.png').convert_alpha(),
+        pygame.image.load('SRC/assets/7.png').convert_alpha(),
+        pygame.image.load('SRC/assets/8.png').convert_alpha(),
+        pygame.image.load('SRC/assets/9.png').convert_alpha(),
+        pygame.image.load('SRC/assets/10.png').convert_alpha(),
+        pygame.image.load('SRC/assets/12.png').convert_alpha(),
+        pygame.image.load('SRC/assets/13.png').convert_alpha(),
+        pygame.image.load('SRC/assets/14.png').convert_alpha(),
+        pygame.image.load('SRC/assets/15.png').convert_alpha(),
+        pygame.image.load('SRC/assets/16.png').convert_alpha()
+        )
     #add gameover image
-    IMAGES['gameover'] = pygame.image.load('...').convert_alpha()
+    IMAGES['gameover'] = pygame.image.load('SRC/assets/gameover.png').convert_alpha()
+    #welcome image
+    IMAGES['message'] = pygame.image.load('').convert_alpha()
     #add ground image
-    IMAGES['base'] = pygame.image.load('...').convert_alpha()
+    IMAGES['base'] = pygame.image.load('SRC/assets/base.png').convert_alpha()
+    
     
     
     #Sounds implement
@@ -107,14 +131,14 @@ def mainGame(movementInfo):
 
     # list of upper pipes
     upperPipes = [
-        {'x': SCREENWIDTH + 200, 'y': newPipe1[0]['y']},
-        {'x': SCREENWIDTH + 200 + (SCREENWIDTH / 2), 'y': newPipe2[0]['y']},
+        {'x': SCREENWIDTH + 400, 'y': newPipe1[0]['y']},
+        {'x': SCREENWIDTH + 400 + (SCREENWIDTH / 2), 'y': newPipe2[0]['y']},
     ]
 
     # list of lowerpipe
     lowerPipes = [
-        {'x': SCREENWIDTH + 200, 'y': newPipe1[1]['y']},
-        {'x': SCREENWIDTH + 200 + (SCREENWIDTH / 2), 'y': newPipe2[1]['y']},
+        {'x': SCREENWIDTH + 400, 'y': newPipe1[1]['y']},
+        {'x': SCREENWIDTH + 400 + (SCREENWIDTH / 2), 'y': newPipe2[1]['y']},
     ]
 
     pipeVelX = -4
