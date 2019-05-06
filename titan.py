@@ -30,11 +30,16 @@ def main():
     global SCREEN,FPSCLOCK
     pygame.init()
 
+    FPSCLOCK = pygame.time.Clock()
+    SCREEN = pygame.display.set_mode((SCREENWIDTH, SCREENHEIGHT))
+    pygame.display.set_caption('Titan Fly')
+
     #add counter images
     IMAGES['numbers'] = (              
         pygame.image.load('SRC/assets/1.png').convert_alpha(),
         pygame.image.load('SRC/assets/2.png').convert_alpha(),
         pygame.image.load('SRC/assets/3.png').convert_alpha(),
+        pygame.image.load('SRC/assets/epp.png').convert_alpha(),
         pygame.image.load('SRC/assets/4.png').convert_alpha(),
         pygame.image.load('SRC/assets/5.png').convert_alpha(),
         pygame.image.load('SRC/assets/6.png').convert_alpha(),
@@ -51,25 +56,23 @@ def main():
     #add gameover image
     IMAGES['gameover'] = pygame.image.load('SRC/assets/gameover.png').convert_alpha()
     #welcome image
-    IMAGES['message'] = pygame.image.load('').convert_alpha()
+    IMAGES['message'] = pygame.image.load('SRC/assets/message.png').convert_alpha()
     #add ground image
     IMAGES['base'] = pygame.image.load('SRC/assets/base.png').convert_alpha()
     
     
     
     #Sounds implement
+    if 'win' in sys.platform:
+        soundExt = '.wav'
+    else:
+        soundExt = '.ogg'
 
-    # sounds
-    #if 'win' in sys.platform:
-    #soundExt = '.wav'
-    #else:
-    #soundExt = '.ogg'
-
-    # SOUNDS['die']    = pygame.mixer.Sound('...' + soundExt)
-    # SOUNDS['hit']    = pygame.mixer.Sound('...' + soundExt)
-    # SOUNDS['point']  = pygame.mixer.Sound('...' + soundExt)
-    # SOUNDS['swoosh'] = pygame.mixer.Sound('...' + soundExt)
-    # SOUNDS['wing']   = pygame.mixer.Sound('...' + soundExt)
+    SOUNDS['die']    = pygame.mixer.Sound('SRC/assets/audio/die' + soundExt)
+    SOUNDS['hit']    = pygame.mixer.Sound('SRC/assets/audio/hit' + soundExt)
+    SOUNDS['point']  = pygame.mixer.Sound('SRC/assets/audio/point' + soundExt)
+    SOUNDS['swoosh'] = pygame.mixer.Sound('SRC/assets/audio/swoosh' + soundExt)
+    SOUNDS['wing']   = pygame.mixer.Sound('SRC/assets/audio/wing' + soundExt)
 
 
     while True:
@@ -380,6 +383,9 @@ def mainGame(movementInfo):
 
 #Rushi
 def showGameOverScreen(crashInfo):
+    
+
+
 
 #Kizar
 def showScore(score):
