@@ -16,9 +16,9 @@ BASEY = SCREENHEIGHT * 0.9
 IMAGES, SOUNDS, HITMASKS = {}, {}, {}
 
 #List of all sprites
-PLAYERS_LIST = ('','','')
+PLAYERS_LIST = ('SRC/assets/birdup.png','SRC/assets/bird.png','SRC/assets/birddown.png')
 BACKGROUND_LIST = ('SRC/assets/day.png', 'SRC/assets/night.png')
-PIPES_LIST = ()
+PIPES_LIST = ('SRC/assets/pipe-green.png','SRC/assets/pipe-red.png')
 
 #try:
 #    xrange
