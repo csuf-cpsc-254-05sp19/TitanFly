@@ -15,7 +15,7 @@ py2exe.build_exe.isSystemDLL = isSystemDLL
 sys.argv.append('py2exe')
 
 setup(
-    name =    'TitanFly',
+    name =    'Titan Fly',
     version = '1.0',
     author =  'Kizar Cassiere, Rushi Sharma, Swagat Buha',
     options = {

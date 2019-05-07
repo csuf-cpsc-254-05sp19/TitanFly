@@ -16,7 +16,7 @@ BASEY = SCREENHEIGHT * 0.9
 IMAGES, SOUNDS, HITMASKS = {}, {}, {}
 
 #List of all sprites
-PLAYERS_LIST = ('SRC/assets/birdup.png','SRC/assets/bird.png','SRC/assets/birddown.png')
+PLAYERS_LIST = (('SRC/assets/birdup.png','SRC/assets/bird.png','SRC/assets/birddown.png'),('SRC/assets/birdup.png','SRC/assets/bird.png','SRC/assets/birddown.png'),('SRC/assets/birdup.png','SRC/assets/bird.png','SRC/assets/birddown.png'))
 BACKGROUNDS_LIST = ('SRC/assets/day.png', 'SRC/assets/night.png')
 PIPES_LIST = ('SRC/assets/pipe-green.png','SRC/assets/pipe-red.png')
 
@@ -36,6 +36,7 @@ def main():
 
     #add counter images
     IMAGES['numbers'] = (
+        pygame.image.load('assets/sprites/0.png').convert_alpha(),
         pygame.image.load('SRC/assets/1.png').convert_alpha(),
         pygame.image.load('SRC/assets/2.png').convert_alpha(),
         pygame.image.load('SRC/assets/3.png').convert_alpha(),
@@ -134,7 +135,7 @@ def showWelcomeAnimation():
 
     # Position of the welcome message on the welcome screen
     welcomeX = int((SCREENWIDTH - IMAGES['welcome'].get_width())/2)
-    welcomeY = int(SCREENHEIGHT * 0.2)
+    welcomeY = int(SCREENHEIGHT * 0.12)
 
     # Setting the width of base to zero
     baseX = 0
