@@ -17,13 +17,13 @@ IMAGES, SOUNDS, HITMASKS = {}, {}, {}
 
 #List of all sprites
 PLAYERS_LIST = ('SRC/assets/birdup.png','SRC/assets/bird.png','SRC/assets/birddown.png')
-BACKGROUND_LIST = ('SRC/assets/day.png', 'SRC/assets/night.png')
+BACKGROUNDS_LIST = ('SRC/assets/day.png', 'SRC/assets/night.png')
 PIPES_LIST = ('SRC/assets/pipe-green.png','SRC/assets/pipe-red.png')
 
-#try:
-#    xrange
-#except NameError:
-#    xrange = range
+try:
+   xrange
+except NameError:
+   xrange = range
 
 #Kizar
 def main():
@@ -56,7 +56,7 @@ def main():
     #add gameover image
     IMAGES['gameover'] = pygame.image.load('SRC/assets/gameover.png').convert_alpha()
     #welcome image
-    IMAGES['message'] = pygame.image.load('SRC/assets/message.png').convert_alpha()
+    IMAGES['welcome'] = pygame.image.load('SRC/assets/message.png').convert_alpha()
     #add ground image
     IMAGES['base'] = pygame.image.load('SRC/assets/base.png').convert_alpha()
 
@@ -176,7 +176,7 @@ def showWelcomeAnimation():
         # Drawing sprites with image source and coordinates
         SCREEN.blit(IMAGES['background'], (0,0))
         SCREEN.blit(IMAGES['player'][playerIndex], (playerX, playerY + playerShmValues['val']))
-        SCREEN.blit(IMAGES['message'], (messageX, messageY))
+        SCREEN.blit(IMAGES['message'], (welcomeX, welcomeY))
         SCREEN.blit(IMAGES['base'], (baseX, BASEY))
 
         # Updating the display using pygame library
@@ -224,68 +224,6 @@ def mainGame(movementInfo):
     playerRotThr  =  15   # rotation threshold
     playerFlapAcc =  -7   # players speed on flapping
     playerFlapped = False # True when player flaps
-
-
-    while True:
-        for event in pygame.event.get():
-            if event.type == QUIT or (event.type == KEYDOWN and event.key == K_ESCAPE):
-                pygame.quit()
-                sys.exit()
-            if event.type == KEYDOWN and (event.key == K_SPACE or event.key == K_UP):
-                if playery > -2 * IMAGES['player'][0].get_height():
-                    playerVelY = playerFlapAcc
-                    playerFlapped = True
-                    SOUNDS['wing'].play()
-
-        # check for crash here
-        crashTest = checkCrash({'x': playerx, 'y': playery, 'index': playerIndex},
-                               upperPipes, lowerPipes)
-        if crashTest[0]:
-            return {
-                'y': playery,
-                'groundCrash': crashTest[1],
-                'basex': basex,
-                'upperPipes': upperPipes,
-                'lowerPipes': lowerPipes,
-                'score': score,
-                'playerVelY': playerVelY,
-                'playerRot': playerRot
-            }
-
-        # check for score
-        playerMidPos = playerx + IMAGES['player'][0].get_width() / 2
-        for pipe in upperPipes:
-            pipeMidPos = pipe['x'] + IMAGES['pipe'][0].get_width() / 2
-            if pipeMidPos <= playerMidPos < pipeMidPos + 4:
-                score += 1
-                SOUNDS['point'].play()
-
-        # playerIndex basex change
-        if (loopIter + 1) % 3 == 0:
-            playerIndex = next(playerIndexGen)
-        loopIter = (loopIter + 1) % 30
-        basex = -((-basex + 100) % baseShift)
-
-        # rotate the player
-        if playerRot > -90:
-            playerRot -= playerVelRot
-
-        # player's movement
-        if playerVelY < playerMaxVelY and not playerFlapped:
-            playerVelY += playerAccY
-        if playerFlapped:
-            playerFlapped = False
-
-            # more rotation to cover the threshold (calculated in visible rotation)
-            playerRot = 45
-
-        playerHeight = IMAGES['player'][playerIndex].get_height()
-        playery += min(playerVelY, BASEY - playery - playerHeight)
-
-        # move pipes to left
-        for uPipe, lPipe in zip(upperPipes, lowerPipes):
-            uPipe['x'] += pipeVelX
-            lPipe['x'] += pipeVelX
 
     while True:
         for event in pygame.event.get():
@@ -488,7 +426,7 @@ def showScore(score):
     offSetX = (SCREENWIDTH - numWidth) /  2
 
     for digit in scoreDigi:
-        SCREEN.blit(IMAGES['numbers'][digit], (Xoffset, SCREENHEIGHT * 0.1))
+        SCREEN.blit(IMAGES['numbers'][digit], (offSetX, SCREENHEIGHT * 0.1))
         offSetX += IMAGES['numbers'][digit].get_width()
 
 #Sunny
