@@ -35,7 +35,7 @@ def main():
     pygame.display.set_caption('Titan Fly')
 
     #add counter images
-    IMAGES['numbers'] = (              
+    IMAGES['numbers'] = (
         pygame.image.load('SRC/assets/1.png').convert_alpha(),
         pygame.image.load('SRC/assets/2.png').convert_alpha(),
         pygame.image.load('SRC/assets/3.png').convert_alpha(),
@@ -59,9 +59,9 @@ def main():
     IMAGES['message'] = pygame.image.load('SRC/assets/message.png').convert_alpha()
     #add ground image
     IMAGES['base'] = pygame.image.load('SRC/assets/base.png').convert_alpha()
-    
-    
-    
+
+
+
     #Sounds implement
     if 'win' in sys.platform:
         soundExt = '.wav'
@@ -383,7 +383,87 @@ def mainGame(movementInfo):
 
 #Rushi
 def showGameOverScreen(crashInfo):
-    
+    """displays game over screen if the player crashes with any pipes or the base"""
+
+    #assign the final score after the player crashes
+    score = crashInfo['score']
+
+    # position of the player character on the screen after the crash
+    playerx = SCREENWIDTH * 0.2
+    playery = crashInfo['y']
+
+    #height, velocity, acceleration of the player character
+    playerHeight = IMAGES['player'][0].get_height()
+    playerVelY = crashInfo['playerVelY']
+    playerAccY = 2
+
+    #player chracter's rotation and rotational velocity after the crash
+    playerRot = crashInfo['playerRot']
+    playerVelRot = 7
+
+    #position of the base after the crash
+    basex = crashInfo['basex']
+
+    #assigning values to the pipes after the crash
+    upperPipes, lowerPipes = crashInfo['upperPipes'], crashInfo['lowerPipes']
+
+    # play hit and die sounds
+    SOUNDS['hit'].play()
+    if not crashInfo['groundCrash']:
+        SOUNDS['die'].play()
+
+    # While loop to determine the on-screen output after the crash
+    while True:
+        for event in pygame.event.get():
+
+        # Exiting the game if the player pressed the escape button
+            if  event.type == QUIT or (event.type == KEYDOWN and event.key == K_ESCAPE):
+                pygame.quit()
+                sys.exit()
+
+            # returning to the beginning of the gameif the player presses space or up button
+            if event.type == KEYDOWN and (event.key == K_SPACE or event.key == K_UP):
+                if playery + playerHeight >= BASEY - 1:
+                    return
+
+        # player y shift
+        if playery + playerHeight < BASEY - 1:
+            playery += min(playerVelY, BASEY - playery - playerHeight)
+
+        # player velocity change
+        if playerVelY < 15:
+            playerVelY += playerAccY
+
+        # rotate only when it's a pipe crash
+        if not crashInfo['groundCrash']:
+            if playerRot > -90:
+                playerRot -= playerVelRot
+
+        # draw sprite for background
+        SCREEN.blit(IMAGES['background'], (0,0))
+
+        #drawing sprites for upper and lower pipes
+        for uPipe, lPipe in zip(upperPipes, lowerPipes):
+            SCREEN.blit(IMAGES['pipe'][0], (uPipe['x'], uPipe['y']))
+            SCREEN.blit(IMAGES['pipe'][1], (lPipe['x'], lPipe['y']))
+
+        #drawing sprite for the base and showing the score
+        SCREEN.blit(IMAGES['base'], (basex, BASEY))
+        showScore(score)
+
+        #rotating the player character image after the crash and blitting it to the screen
+        playerSurface = pygame.transform.rotate(IMAGES['player'][1], playerRot)
+        SCREEN.blit(playerSurface, (playerx,playery))
+
+        #drwaing sprite for the game over message
+        SCREEN.blit(IMAGES['gameover'], (50, 180))
+
+        #setting the frames per second for the display
+        FPSCLOCK.tick(FPS)
+
+        #updating the display using pygame library
+        pygame.display.update()
+
 
 
 
@@ -423,6 +503,20 @@ def playerShm(playerShm):
         playerShm['val'] -= 2
 #Rushi
 def getRandomPipe():
+    """this function returns a randomly generated pipe"""
+
+    # generating the random y gap between the pipes
+    gapY = random.randrange(0, int(BASEY * 0.6 - PIPEGAPSIZE))
+    gapY += int(BASEY * 0.2)
+    pipeHeight = IMAGES['pipe'][0].get_height()
+    pipeX = SCREENWIDTH + 10
+
+    #returning the new coordinates for randomly generated upper and lower pipes
+    return [
+        {'x': pipeX, 'y': gapY - pipeHeight},  # for the upper pipe
+        {'x': pipeX, 'y': gapY + PIPEGAPSIZE}, # for the lower pipe
+    ]
+
 
 #Kizar
 def checkCrash(player, upperPipes, lowerPipes):
@@ -480,5 +574,5 @@ def pixelCollision(rect1, rect2, hitmask1, hitmask2):
 #Sunny
 def getHitmask(image):
 
-if __name__ == '__main__':
-main()
+    if __name__ == '__main__':
+        main()
