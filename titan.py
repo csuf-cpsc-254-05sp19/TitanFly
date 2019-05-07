@@ -16,7 +16,7 @@ BASEY = SCREENHEIGHT * 0.9
 IMAGES, SOUNDS, HITMASKS = {}, {}, {}
 
 #List of all sprites
-PLAYERS_LIST = (('SRC/assets/birdup.png','SRC/assets/bird.png','SRC/assets/birddown.png'),('SRC/assets/birdup.png','SRC/assets/bird.png','SRC/assets/birddown.png'),('SRC/assets/birdup.png','SRC/assets/bird.png','SRC/assets/birddown.png'))
+PLAYERS_LIST = (('SRC/assets/birdup.png','SRC/assets/bird.png','SRC/assets/birddown.png'),('SRC/assets/birdup.png','SRC/assets/bird.png','SRC/assets/birddown.png'),('SRC/assets/birdup.png','SRC/assets/bird.png','SRC/assets/birddown.png'),)
 BACKGROUNDS_LIST = ('SRC/assets/day.png', 'SRC/assets/night.png')
 PIPES_LIST = ('SRC/assets/pipe-green.png','SRC/assets/pipe-red.png')
 
@@ -36,7 +36,7 @@ def main():
 
     #add counter images
     IMAGES['numbers'] = (
-        pygame.image.load('assets/sprites/0.png').convert_alpha(),
+        pygame.image.load('SRC/assets/0.png').convert_alpha(),
         pygame.image.load('SRC/assets/1.png').convert_alpha(),
         pygame.image.load('SRC/assets/2.png').convert_alpha(),
         pygame.image.load('SRC/assets/3.png').convert_alpha(),
@@ -57,7 +57,7 @@ def main():
     #add gameover image
     IMAGES['gameover'] = pygame.image.load('SRC/assets/gameover.png').convert_alpha()
     #welcome image
-    IMAGES['welcome'] = pygame.image.load('SRC/assets/message.png').convert_alpha()
+    IMAGES['message'] = pygame.image.load('SRC/assets/message.png').convert_alpha()
     #add ground image
     IMAGES['base'] = pygame.image.load('SRC/assets/base.png').convert_alpha()
 
@@ -114,77 +114,127 @@ def main():
         crashInfo = mainGame(movementInfo)
         showGameOverScreen(crashInfo)
 
-
-
-#Rushi
 def showWelcomeAnimation():
-    """This function shows the welcome animation at the beginning of the game"""
-
-    # Index of the player blitting on the SCREEN
+    """Shows welcome screen animation of flappy bird"""
+    # index of player to blit on screen
     playerIndex = 0
-
-    # Player index generator to switch between the three different characters provided
-    playerIndexGenerator = cycle([0, 1, 2, 1])
-
-    # Iterator used to change player after every 3rd iteration
+    playerIndexGen = cycle([0, 1, 2, 1])
+    # iterator used to change playerIndex after every 5th iteration
     loopIter = 0
 
-    # Position of the player character on the welcome screen
-    playerX = int(SCREENWIDTH * 0.2)
-    playerY = int((SCREENHEIGHT - IMAGES['player'][0].get_height())/2)
+    playerx = int(SCREENWIDTH * 0.2)
+    playery = int((SCREENHEIGHT - IMAGES['player'][0].get_height()) / 2)
 
-    # Position of the welcome message on the welcome screen
-    welcomeX = int((SCREENWIDTH - IMAGES['welcome'].get_width())/2)
-    welcomeY = int(SCREENHEIGHT * 0.12)
+    messagex = int((SCREENWIDTH - IMAGES['message'].get_width()) / 2)
+    messagey = int(SCREENHEIGHT * 0.12)
 
-    # Setting the width of base to zero
-    baseX = 0
-
-    # The amount by which the base shift to either right or the left
+    basex = 0
+    # amount by which base can maximum shift to left
     baseShift = IMAGES['base'].get_width() - IMAGES['background'].get_width()
 
-    # Value and direction for simple harmonic motion performed by the player character on the welcome screen
-    playerShmValues = {'val': 0, 'dir': 1}
+    # player shm for up-down motion on welcome screen
+    playerShmVals = {'val': 0, 'dir': 1}
 
-    # While loop to determine the on-screen output after first action is taken
     while True:
         for event in pygame.event.get():
-
-        # Exiting the game if the player pressed the escape button
-            if  event.type == QUIT or (event.type == KEYDOWN and event.key == K_ESCAPE):
+            if event.type == QUIT or (event.type == KEYDOWN and event.key == K_ESCAPE):
                 pygame.quit()
                 sys.exit()
-
-            # Making the first jump and starting the game if the player presses space or up button
             if event.type == KEYDOWN and (event.key == K_SPACE or event.key == K_UP):
+                # make first flap sound and return values for mainGame
+                SOUNDS['wing'].play()
                 return {
-                    'playerY': playerY + playerShmValues['val'],
-                    'baseX' : baseX,
-                    'playerIndexGenerator' : playerIndexGenerator,
+                    'playery': playery + playerShmVals['val'],
+                    'basex': basex,
+                    'playerIndexGen': playerIndexGen,
                 }
 
-        # Switching player charecter after every three times
-        if (loopIter + 1) % 3 == 0:
-            playerIndex = next(playerIndexGenerator)
+        # adjust playery, playerIndex, basex
+        if (loopIter + 1) % 5 == 0:
+            playerIndex = next(playerIndexGen)
         loopIter = (loopIter + 1) % 30
+        basex = -((-basex + 4) % baseShift)
+        playerShm(playerShmVals)
 
-        # Adjusting the base positioning on the screen
-        baseX = -((-baseX + 4) % baseShift)
+        # draw sprites
+        SCREEN.blit(IMAGES['background'], (0, 0))
+        SCREEN.blit(IMAGES['player'][playerIndex],
+                    (playerx, playery + playerShmVals['val']))
+        SCREEN.blit(IMAGES['message'], (messagex, messagey))
+        SCREEN.blit(IMAGES['base'], (basex, BASEY))
 
-        # Assigning shm value to the player character
-        playerShm(playerShmValues)
-
-        # Drawing sprites with image source and coordinates
-        SCREEN.blit(IMAGES['background'], (0,0))
-        SCREEN.blit(IMAGES['player'][playerIndex], (playerX, playerY + playerShmValues['val']))
-        SCREEN.blit(IMAGES['message'], (welcomeX, welcomeY))
-        SCREEN.blit(IMAGES['base'], (baseX, BASEY))
-
-        # Updating the display using pygame library
         pygame.display.update()
-
-        # Setting the frames per second for the display
         FPSCLOCK.tick(FPS)
+
+#Rushi
+# def showWelcomeAnimation():
+#     """This function shows the welcome animation at the beginning of the game"""
+
+#     # Index of the player blitting on the SCREEN
+#     playerIndex = 0
+
+#     # Player index generator to switch between the three different characters provided
+#     playerIndexGenerator = cycle([0, 1, 2, 1])
+
+#     # Iterator used to change player after every 3rd iteration
+#     loopIter = 0
+
+#     # Position of the player character on the welcome screen
+#     playerX = int(SCREENWIDTH * 0.2)
+#     playerY = int((SCREENHEIGHT - IMAGES['player'][0].get_height())/2)
+
+#     # Position of the welcome message on the welcome screen
+#     welcomeX = int((SCREENWIDTH - IMAGES['welcome'].get_width())/2)
+#     welcomeY = int(SCREENHEIGHT * 0.12)
+
+#     # Setting the width of base to zero
+#     baseX = 0
+
+#     # The amount by which the base shift to either right or the left
+#     baseShift = IMAGES['base'].get_width() - IMAGES['background'].get_width()
+
+#     # Value and direction for simple harmonic motion performed by the player character on the welcome screen
+#     playerShmValues = {'val': 0, 'dir': 1}
+
+#     # While loop to determine the on-screen output after first action is taken
+#     while True:
+#         for event in pygame.event.get():
+
+#         # Exiting the game if the player pressed the escape button
+#             if  event.type == QUIT or (event.type == KEYDOWN and event.key == K_ESCAPE):
+#                 pygame.quit()
+#                 sys.exit()
+
+#             # Making the first jump and starting the game if the player presses space or up button
+#             if event.type == KEYDOWN and (event.key == K_SPACE or event.key == K_UP):
+#                 return {
+#                     'playerY': playerY + playerShmValues['val'],
+#                     'baseX' : baseX,
+#                     'playerIndexGenerator' : playerIndexGenerator,
+#                 }
+
+#         # Switching player charecter after every three times
+#         if (loopIter + 1) % 3 == 0:
+#             playerIndex = next(playerIndexGenerator)
+#         loopIter = (loopIter + 1) % 30
+
+#         # Adjusting the base positioning on the screen
+#         baseX = -((-baseX + 4) % baseShift)
+
+#         # Assigning shm value to the player character
+#         playerShm(playerShmValues)
+
+#         # Drawing sprites with image source and coordinates
+#         SCREEN.blit(IMAGES['background'], (0,0))
+#         SCREEN.blit(IMAGES['player'][playerIndex], (playerX, playerY + playerShmValues['val']))
+#         SCREEN.blit(IMAGES['message'], (welcomeX, welcomeY))
+#         SCREEN.blit(IMAGES['base'], (baseX, BASEY))
+
+#         # Updating the display using pygame library
+#         pygame.display.update()
+
+#         # Setting the frames per second for the display
+#         FPSCLOCK.tick(FPS)
 
 
 
@@ -220,7 +270,7 @@ def mainGame(movementInfo):
     playerMaxVelY =  5   # max vel along Y, max descend speed
     playerMinVelY =  -15   # min vel along Y, max ascend speed
     playerAccY    =   1   # players downward accleration
-    playerRot     =  360   # player's rotation
+    playerRot     =  45   # player's rotation
     playerVelRot  =   10   # angular speed
     playerRotThr  =  15   # rotation threshold
     playerFlapAcc =  -7   # players speed on flapping
@@ -406,29 +456,7 @@ def showGameOverScreen(crashInfo):
 
 
 
-#Kizar
-def showScore(score):
-    scoreDigi = []
-    numWidth = 0
 
-    for x in list(str(score)):
-
-        scoreDigi.append(int(x))
-
-    for digit in scoreDigi:
-        numWidth += IMAGES['numbers'][digit].get_width()
-
-        scoreDigi.append(int(x))
-
-    for digit in scoreDigi:
-        numWidth += IMAGES['numbers'][digit].get_width()
-
-
-    offSetX = (SCREENWIDTH - numWidth) /  2
-
-    for digit in scoreDigi:
-        SCREEN.blit(IMAGES['numbers'][digit], (offSetX, SCREENHEIGHT * 0.1))
-        offSetX += IMAGES['numbers'][digit].get_width()
 
 #Sunny
 def playerShm(playerShm):
@@ -455,6 +483,30 @@ def getRandomPipe():
         {'x': pipeX, 'y': gapY - pipeHeight},  # for the upper pipe
         {'x': pipeX, 'y': gapY + PIPEGAPSIZE}, # for the lower pipe
     ]
+
+#Kizar
+def showScore(score):
+    scoreDigi = []
+    numWidth = 0
+
+    for x in list(str(score)):
+
+        scoreDigi.append(int(x))
+
+    for digit in scoreDigi:
+        numWidth += IMAGES['numbers'][digit].get_width()
+
+        scoreDigi.append(int(x))
+
+    for digit in scoreDigi:
+        numWidth += IMAGES['numbers'][digit].get_width()
+
+    offSetX = (SCREENWIDTH - numWidth) / 2
+
+    for digit in scoreDigi:
+        SCREEN.blit(IMAGES['numbers'][digit], (offSetX, SCREENHEIGHT * 0.1))
+        offSetX += IMAGES['numbers'][digit].get_width()
+
 
 
 #Kizar
@@ -512,6 +564,13 @@ def pixelCollision(rect1, rect2, hitmask1, hitmask2):
 
 #Sunny
 def getHitmask(image):
+    """returns a hitmask using an image's alpha."""
+    mask = []
+    for x in xrange(image.get_width()):
+        mask.append([])
+        for y in xrange(image.get_height()):
+            mask[x].append(bool(image.get_at((x,y))[3]))
+    return mask
 
-    if __name__ == '__main__':
-        main()
+if __name__ == '__main__':
+    main()
