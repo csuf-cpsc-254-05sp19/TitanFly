@@ -8,7 +8,7 @@ from pygame.locals import *
 
 FPS = 60
 SCREENWIDTH = 1135
-SCREENHEIGHT = 700
+SCREENHEIGHT = 650
 PIPEGAPSIZE = 150
 BASEY        = SCREENHEIGHT * 0.9
 # image, sound and hitmask  dicts
@@ -51,10 +51,14 @@ def main():
         pygame.image.load('SRC/assets/sprites/14.png').convert_alpha(),
         pygame.image.load('SRC/assets/sprites/15.png').convert_alpha(),
         pygame.image.load('SRC/assets/sprites/16.png').convert_alpha()
+        
+        
+      
     )
     #add gameover image
-    IMAGES['gameover'] = pygame.image.load(
+    IMAGES['gameover'] = pygame.image.load( 
         'SRC/assets/sprites/gameover.png').convert_alpha()
+        
     #welcome image
     IMAGES['message'] = pygame.image.load(
         'SRC/assets/sprites/message.png').convert_alpha()
@@ -87,7 +91,7 @@ def main():
         )
 
         # select random pipe sprites
-        pipeindex = random.randint(0, len(PIPES_LIST) - 1)
+        pipeindex = random.randint(0, len(PIPES_LIST) - 2)
         IMAGES['pipe'] = (
             pygame.transform.flip(
                 pygame.image.load(PIPES_LIST[pipeindex]).convert_alpha(), False, True),
@@ -195,8 +199,8 @@ def mainGame(movementInfo):
     playerVelY    =  -2   # player's velocity along Y, default same as playerFlapped
     playerMaxVelY =  10   # max vel along Y, max descend speed
     playerMinVelY =  -8   # min vel along Y, max ascend speed
-    playerAccY    =   0.3   # players downward accleration
-    playerRot     =  45   # player's rotation
+    playerAccY    =   0.275   # players downward accleration
+    playerRot     =  90   # player's rotation
     playerVelRot  =   3   # angular speed
     playerRotThr  =  20   # rotation threshold
     playerFlapAcc =  -5   # players speed on flapping
@@ -363,13 +367,13 @@ def showGameOverScreen(crashInfo):
 
 def playerShm(playerShm):
     """oscillates the value of playerShm['val'] between 8 and -8"""
-    if abs(playerShm['val']) == 8:
-        playerShm['dir'] *= -1
+    if abs(playerShm['val']) == 9:
+        playerShm['dir'] *= -2
 
-    if playerShm['dir'] == 1:
-         playerShm['val'] += 1
+    if playerShm['dir'] == 2:
+         playerShm['val'] += 2
     else:
-        playerShm['val'] -= 1
+        playerShm['val'] -= 2
 
 
 def getRandomPipe():
@@ -399,6 +403,7 @@ def showScore(score):
     for digit in scoreDigits:
         SCREEN.blit(IMAGES['numbers'][digit], (Xoffset, SCREENHEIGHT * 0.1))
         Xoffset += IMAGES['numbers'][digit].get_width()
+    
 
 
 def checkCrash(player, upperPipes, lowerPipes):
