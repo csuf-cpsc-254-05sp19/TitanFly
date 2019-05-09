@@ -359,7 +359,7 @@ def showGameOverScreen(crashInfo):
 
         playerSurface = pygame.transform.rotate(IMAGES['player'][1], playerRot)
         SCREEN.blit(playerSurface, (playerx,playery))
-        SCREEN.blit(IMAGES['gameover'], (50, 180))
+        SCREEN.blit(IMAGES['gameover'], (420, 180))
 
         FPSCLOCK.tick(FPS)
         pygame.display.update()
