@@ -50,10 +50,9 @@ def main():
         pygame.image.load('SRC/assets/sprites/13.png').convert_alpha(),
         pygame.image.load('SRC/assets/sprites/14.png').convert_alpha(),
         pygame.image.load('SRC/assets/sprites/15.png').convert_alpha(),
-        pygame.image.load('SRC/assets/sprites/16.png').convert_alpha()
+        pygame.image.load('SRC/assets/sprites/16.png').convert_alpha(),
+        pygame.image.load('SRC/assets/sprites/congrats.png').convert_alpha()
         
-        
-      
     )
     #add gameover image
     IMAGES['gameover'] = pygame.image.load( 
@@ -391,18 +390,21 @@ def getRandomPipe():
 
 
 def showScore(score):
-    """displays score in center of screen"""
-    scoreDigits = [int(x) for x in list(str(score))]
-    totalWidth = 0 # total width of all numbers to be printed
+    scoreDigi = []
+    numWidth = 0
 
-    for digit in scoreDigits:
-        totalWidth += IMAGES['numbers'][digit].get_width()
+    for x in list(str(score)):
 
-    Xoffset = (SCREENWIDTH - totalWidth) / 2
+        scoreDigi.append(int(x))
 
-    for digit in scoreDigits:
-        SCREEN.blit(IMAGES['numbers'][digit], (Xoffset, SCREENHEIGHT * 0.1))
-        Xoffset += IMAGES['numbers'][digit].get_width()
+    for digit in scoreDigi:
+        numWidth += IMAGES['numbers'][digit].get_width()
+
+    offSetX = (SCREENWIDTH - numWidth) /  2
+
+    for digit in scoreDigi:
+        SCREEN.blit(IMAGES['numbers'][digit], (offSetX, SCREENHEIGHT * 0.1))
+        offSetX += IMAGES['numbers'][digit].get_width()
     
 
 
